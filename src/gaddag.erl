@@ -52,16 +52,11 @@ construct_sigma(Words) ->
                              Sigma
                     end,
                       
-    MergeLists =  fun ([], Ys, _F) -> Ys;
-                      (Xs, [], _F) -> Xs;
-                      ([X | Xs], [Y | Ys], F)  when X =:= Y-> F(Xs, [Y | Ys], F);
-                      ([X | Xs], [Y | Ys], F) ->
-                         case X < Y of 
-                             true ->
-                                 [X | F(Xs, [Y | Ys], F)];
-                             false ->
-                                 [Y | F([X | Xs], Ys, F)]
-                         end
+    MergeLists =  fun ([], Ys, _F)                          -> Ys;
+                      (Xs, [], _F)                          -> Xs;
+                      ([X | Xs], [Y | Ys], F)  when X =:= Y -> F(Xs, [Y | Ys], F);
+                      ([X | Xs], [Y | Ys], F)  when X < Y   -> [X | F(Xs, [Y | Ys], F)];
+                      ([X | Xs], [Y | Ys], F)               -> [Y | F([X | Xs], Ys, F)]
                   end,
       
     lists:foldr(fun(Word, Acc) -> 
@@ -132,3 +127,7 @@ validate_board({board, N, M, Data}) ->
     lists:foldr(fun(Row, Acc) ->
                         Acc and  validate_row(Row)
                 end, true, Data) and validate_board(transpose_board({board, N,M, Data})).
+
+
+transpose_board({board, N, M, Data}) ->
+    Create_board
