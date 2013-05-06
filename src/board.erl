@@ -5,7 +5,7 @@
 -record(board, {n, m, data}).
 
 new(N,M) ->
-    #board{ n = N, m = M, data = array:new([{size, N*M}, {fixed, true}, {default, 95}])}.
+    #board{ n = N, m = M, data = array:new([{size, N*M}, {fixed, true}, {default, unset}])}.
 
 
 
@@ -66,9 +66,14 @@ fold(EvalFun,Init, Board) ->
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 pretty_print(Board) ->
     N = Board#board.n,
+    Print = fun(unset) -> 
+                    io_lib:format("~s", ['_']);                    
+               (Value) ->
+                    io_lib:format("~s", [[Value]])               
+            end,
     foreach(fun(I,_J, Value) when I =:= N-1 ->
-                    io:fwrite("~s ~n", [[Value]]);
+                    io:fwrite("~s ~n", [Print(Value)]);
                (_I,_J, Value) ->
-                    io:fwrite("~s ", [[Value]])
+                    io:fwrite("~s ", [Print(Value)])
             end, Board).
 
