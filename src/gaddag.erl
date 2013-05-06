@@ -14,18 +14,21 @@ construct_from_dictionary(FileName) ->
     
 
 construct_sigma_1(Words) ->
-    Array = lists:foldr(fun(W, Acc) ->
-                                lists:foldr(fun(X, Arr) ->
-                                                    array:set(X, set, Arr)
-                                            end, Acc, W)
-                        end, array:new([{size, 256},
-                                        {fixed, true},
-                                        {default, unset}]), Words),
-    array:foldr(fun (Idx, set, Letters)  -> 
-                        [Idx|Letters];
-                    (_idx, unset, Letters) ->
-                        Letters
-                end, [], Array).
+    Array = lists:foldr(
+              fun(W, Acc) ->
+                      lists:foldr(
+                        fun(X, Arr) ->
+                                array:set(X, set, Arr)
+                        end, Acc, W)
+              end, array:new([{size, 256},
+                              {fixed, true},
+                              {default, unset}]), Words),
+    array:foldr(
+      fun (Idx, set, Letters)  -> 
+              [Idx|Letters];
+          (_idx, unset, Letters) ->
+              Letters
+      end, [], Array).
 
 
 
@@ -43,20 +46,20 @@ construct_sigma(Words) ->
                                                                    false ->
                                                                        case X =:= Last of 
                                                                            true -> 
-                                                                               {X, Letters};
+                                                                    {X, Letters};
                                                                            false ->
                                                                                {X, [X |  Letters]}
                                                                        end
                                                                end
                                                        end, {'.', []}, Sorted),
                              Sigma
-                    end,
+                     end,
                       
-    MergeLists =  fun ([], Ys, _F)                          -> Ys;
-                      (Xs, [], _F)                          -> Xs;
+    MergeLists =  fun ([], Ys, _F) -> Ys;
+                      (Xs, [], _F) -> Xs;
                       ([X | Xs], [Y | Ys], F)  when X =:= Y -> F(Xs, [Y | Ys], F);
-                      ([X | Xs], [Y | Ys], F)  when X < Y   -> [X | F(Xs, [Y | Ys], F)];
-                      ([X | Xs], [Y | Ys], F)               -> [Y | F([X | Xs], Ys, F)]
+                      ([X | Xs], [Y | Ys], F)  when X  <  Y -> [X | F(Xs, [Y | Ys], F)];
+                      ([X | Xs], [Y | Ys], F) -> [Y | F([X | Xs], Ys, F)]
                   end,
       
     lists:foldr(fun(Word, Acc) -> 
