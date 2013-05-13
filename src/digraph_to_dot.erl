@@ -15,8 +15,8 @@
 generate_vertices(G) ->
     Vertices = digraph:vertices(G),
     {Dict, _Counter} = lists:foldr(fun(V, {D, Counter}) ->
-                                           {dict:store(V, "node" ++ integer_to_list(Counter), D), Counter +1}
-                                   end, {dict:new(), 0}, Vertices),
+                            {dict:store(V, "node" ++ integer_to_list(Counter), D), Counter +1}
+                    end, {dict:new(), 0}, Vertices),
     Dict.
 
 

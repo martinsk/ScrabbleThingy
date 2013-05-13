@@ -5,7 +5,9 @@
 -record(board, {n, m, data}).
 
 new(N,M) ->
-    #board{ n = N, m = M, data = array:new([{size, N*M}, {fixed, true}, {default, unset}])}.
+    #board{ n = N, m = M, data = array:new([{size, N*M},
+                                            {fixed, true},
+                                            {default, unset}])}.
 
 
 
